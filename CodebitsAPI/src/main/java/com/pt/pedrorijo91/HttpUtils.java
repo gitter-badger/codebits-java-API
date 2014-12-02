@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -51,6 +53,14 @@ public class HttpUtils {
 
     static String httpAuthPostRequest(String url, String token) throws ClientProtocolException, IOException {
         return httpPostRequest(url + "?&token=" + token);
+    }
+
+    static String urlEncode(String string, String encode) throws UnsupportedEncodingException {
+        return URLEncoder.encode(string, encode);
+    }
+
+    static String urlEncode(String string) throws UnsupportedEncodingException {
+        return urlEncode(string, "UTF-8");
     }
 
 }

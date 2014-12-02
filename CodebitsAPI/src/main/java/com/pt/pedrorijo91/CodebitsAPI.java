@@ -1,6 +1,7 @@
 package com.pt.pedrorijo91;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -55,6 +56,36 @@ public class CodebitsAPI {
     }
 
     /**
-     * Bots based endpoints
+     * Bot based endpoints
      */
+
+    public static String getBodyParts() throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/botparts");
+    }
+
+    public static String getUserBot(String userId) throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/botuser/" + userId);
+    }
+
+    public static String makeBot(String body, String bgcolor, String grad, String eyes, String mouth, String legs, String head,
+            String arms, String balloon) throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/botmake/" + body + "," + bgcolor + "," + grad + ","
+                + eyes + "," + mouth + "," + legs + "," + head + "," + arms + "," + HttpUtils.urlEncode(balloon));
+    }
+
+    public static String makeBot(String body, String bgcolor, String grad, String eyes, String mouth, String legs, String head,
+            String arms) throws ClientProtocolException, IOException {
+        return makeBot(body, bgcolor, grad, eyes, mouth, legs, head, arms, "");
+    }
+
+    public static String setBot(String body, String bgcolor, String grad, String eyes, String mouth, String legs, String head,
+            String arms, String balloon, String token) throws ClientProtocolException, UnsupportedEncodingException, IOException {
+        return HttpUtils.httpAuthPostRequest("https://services.sapo.pt/Codebits/botmake/" + body + "," + bgcolor + "," + grad
+                + "," + eyes + "," + mouth + "," + legs + "," + head + "," + arms + "," + HttpUtils.urlEncode(balloon), token);
+    }
+
+    public static String setBot(String body, String bgcolor, String grad, String eyes, String mouth, String legs, String head,
+            String arms, String token) throws ClientProtocolException, UnsupportedEncodingException, IOException {
+        return setBot(body, bgcolor, grad, eyes, mouth, legs, head, arms, "", token);
+    }
 }
