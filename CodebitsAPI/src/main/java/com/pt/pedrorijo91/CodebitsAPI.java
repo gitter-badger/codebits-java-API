@@ -135,4 +135,41 @@ public class CodebitsAPI {
             String arms, String token) throws ClientProtocolException, UnsupportedEncodingException, IOException {
         return setBot(body, bgcolor, grad, eyes, mouth, legs, head, arms, "", token);
     }
+
+    /**
+     * Badge based endpoints
+     */
+
+    public static String listBadges() throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/listbadges");
+    }
+
+    public static String getUsersByBadge(String badgeId) throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/badgesusers/" + badgeId);
+    }
+
+    public static String redeemBadge(String badgeCode, String token) throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthGetRequest("https://services.sapo.pt/Codebits/redeem/" + badgeCode, token);
+    }
+
+    /**
+     * Project based endpoints
+     */
+
+    public static String listProjects(String token) throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthGetRequest("https://services.sapo.pt/Codebits/projects", token);
+    }
+
+    public static String getProjectInfo(String projectId, String token) throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthGetRequest("https://services.sapo.pt/Codebits/project/" + projectId, token);
+    }
+
+    public static String getCurrentVotes() throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/votes");
+    }
+
+    public static String voteProject(boolean vote, String token) throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthPostRequest("https://services.sapo.pt/Codebits/vote1" + (vote ? 1 : 0), token);
+    }
+
 }
