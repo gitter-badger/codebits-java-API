@@ -15,8 +15,24 @@ public class CodebitsAPI {
         return HttpUtils.httpGetRequest("https://codebits.eu/rss");
     }
 
-    public static String getTalkComments(int id) throws ClientProtocolException, IOException {
-        return HttpUtils.httpGetRequest("https://codebits.eu/rss/proposal/" + id);
+    public static String getCalendarIcs() throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://codebits.eu/s/calendar.ics");
+    }
+
+    public static String getCalendar() throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/calendar");
+    }
+
+    public static String getSessionInfo(String sessionId) throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/session/" + sessionId);
+    }
+
+    public static String getSubmissionList() throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/calltalks");
+    }
+
+    public static String getSubmissionList(String token) throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthGetRequest("https://services.sapo.pt/Codebits/calltalks", token);
     }
 
     /**
@@ -53,6 +69,37 @@ public class CodebitsAPI {
 
     public static String listAcceptedUsersBySkill(String skill, String token) throws ClientProtocolException, IOException {
         return HttpUtils.httpAuthGetRequest("https://services.sapo.pt/Codebits/users/" + skill, token);
+    }
+
+    public static String searchByName(String name, String token) throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthGetRequest("https://services.sapo.pt/Codebits/search/" + name, token);
+    }
+
+    /**
+     * Talk based endpoints
+     */
+
+    public static String getTalkComments(int id) throws ClientProtocolException, IOException {
+        return HttpUtils.httpGetRequest("https://codebits.eu/rss/proposal/" + id);
+    }
+
+    public static String postComment(String commentToken, String comment, String subject, String token)
+            throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthPostRequest("https://services.sapo.pt/Codebits/comment/" + commentToken + "?&comment=" + comment
+                + (((subject == null) || (subject.length() == 0)) ? "" : ("&subject=" + subject)), token);
+    }
+
+    public static String postComment(String commentToken, String comment, String token) throws ClientProtocolException,
+            IOException {
+        return postComment(commentToken, comment, null, token);
+    }
+
+    public static String voteTalkUp(String talkId, String token) throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthPostRequest("https://services.sapo.pt/Codebits/calluptalk/" + talkId, token);
+    }
+
+    public static String voteTalkDown(String talkId, String token) throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthPostRequest("https://services.sapo.pt/Codebits/calldowntalk/" + talkId, token);
     }
 
     /**
