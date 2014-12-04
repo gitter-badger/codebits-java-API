@@ -48,11 +48,11 @@ public class HttpUtils {
     }
 
     static String httpAuthGetRequest(String url, String token) throws ClientProtocolException, IOException {
-        return httpGetRequest(url + "?&token=" + token);
+        return httpGetRequest(addParameter(url, "token", token));
     }
 
     static String httpAuthPostRequest(String url, String token) throws ClientProtocolException, IOException {
-        return httpPostRequest(url + "?&token=" + token);
+        return httpPostRequest(addParameter(url, "token", token));
     }
 
     static String urlEncode(String string, String encode) throws UnsupportedEncodingException {
@@ -61,6 +61,13 @@ public class HttpUtils {
 
     static String urlEncode(String string) throws UnsupportedEncodingException {
         return urlEncode(string, "UTF-8");
+    }
+
+    static String addParameter(String url, String parameter, String value) {
+        if (!url.contains("?")) {
+            url += "?";
+        }
+        return url += "&" + parameter + "=" + value;
     }
 
 }

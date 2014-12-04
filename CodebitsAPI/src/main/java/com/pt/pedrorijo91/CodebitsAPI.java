@@ -40,7 +40,8 @@ public class CodebitsAPI {
      */
 
     public static String getAuthToken(String username, String password) throws ClientProtocolException, IOException {
-        return HttpUtils.httpGetRequest("https://services.sapo.pt/Codebits/gettoken?user=" + username + "&password=" + password);
+        return HttpUtils.httpGetRequest(HttpUtils.addParameter(
+                HttpUtils.addParameter("https://services.sapo.pt/Codebits/gettoken", "user", username), "password", password));
     }
 
     public static String getUserById(String userId, String token) throws ClientProtocolException, IOException {
@@ -89,10 +90,16 @@ public class CodebitsAPI {
 
     public static String postComment(String commentToken, String comment, String subject, String token)
             throws ClientProtocolException, IOException {
-        return HttpUtils.httpAuthPostRequest(
-                "https://services.sapo.pt/Codebits/comment/" + commentToken + "?&comment=" + HttpUtils.urlEncode(comment)
-                        + (((subject == null) || (subject.length() == 0)) ? "" : ("&subject=" + HttpUtils.urlEncode(subject))),
-                token);
+
+        String url = "https://services.sapo.pt/Codebits/comment/" + commentToken;
+
+        url = HttpUtils.addParameter(url, "comment", HttpUtils.urlEncode(comment));
+
+        if ((subject != null) && (subject.length() > 0)) {
+            url = HttpUtils.addParameter(url, "subject", HttpUtils.urlEncode(subject));
+        }
+
+        return HttpUtils.httpAuthPostRequest(url, token);
     }
 
     public static String postComment(String commentToken, String comment, String token) throws ClientProtocolException,
