@@ -75,6 +75,10 @@ public class CodebitsAPI {
         return HttpUtils.httpAuthGetRequest("https://services.sapo.pt/Codebits/search/" + name, token);
     }
 
+    public static String getUserFavorites(String userId, String token) throws ClientProtocolException, IOException {
+        return HttpUtils.httpAuthGetRequest("https://services.sapo.pt/Codebits/usersessions/" + userId, token);
+    }
+
     /**
      * Talk based endpoints
      */
@@ -85,8 +89,10 @@ public class CodebitsAPI {
 
     public static String postComment(String commentToken, String comment, String subject, String token)
             throws ClientProtocolException, IOException {
-        return HttpUtils.httpAuthPostRequest("https://services.sapo.pt/Codebits/comment/" + commentToken + "?&comment=" + comment
-                + (((subject == null) || (subject.length() == 0)) ? "" : ("&subject=" + subject)), token);
+        return HttpUtils.httpAuthPostRequest(
+                "https://services.sapo.pt/Codebits/comment/" + commentToken + "?&comment=" + HttpUtils.urlEncode(comment)
+                        + (((subject == null) || (subject.length() == 0)) ? "" : ("&subject=" + HttpUtils.urlEncode(subject))),
+                token);
     }
 
     public static String postComment(String commentToken, String comment, String token) throws ClientProtocolException,
